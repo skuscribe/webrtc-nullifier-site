@@ -1,0 +1,4 @@
+{
+  "extensionName": { "message": "WebRTC Nullifier" },
+  "extensionDescription": { "message": "Previene permanentemente las fugas de IP local de WebRTC y oculta el soporte de API." }
+}

@@ -1,0 +1,20 @@
+=== DEVELOPER INFO ===
+- Developer: skuscribe
+- Contact: skuscribe@tuta.io
+- GitHub: https://github.com/skuscribe
+
+=== LEGAL & COMPLIANCE STRATEGY ===
+Privacy Laws (GDPR, CCPA, COPPA, LGPD):
+This extension collects ZERO user data. It does not use analytics, tracking pixels, cookies, or external telemetry servers. All operations occur locally within the user's browser environment. Therefore, it is inherently compliant with global privacy regulations as no PII (Personally Identifiable Information) is processed, stored, or transmitted.
+
+=== CHROME WEB STORE LISTING ===
+Store Listing Tab:
+- Summary: Permanently prevents WebRTC local IP leaks and hides API support from fingerprinting.
+- Category: Privacy & Security
+- Language: English (Primary), with standard localization support.
+- Privacy Policy: "WebRTC Nullifier does not collect, store, or share any user data. No analytics, no tracking, no external servers."
+
+=== FIREFOX ADD-ONS (AMO) LISTING ===
+- Summary: Dual-layer WebRTC leak prevention and API hiding for absolute privacy.
+- Category: Privacy & Security
+- Privacy Policy: "This extension requires no special permissions beyond the native 'privacy' API. It collects absolutely zero telemetry or user data."

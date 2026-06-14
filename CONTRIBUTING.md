@@ -1,0 +1,13 @@
+# Contributing to WebRTC Nullifier
+
+## How to Contribute
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+## Coding Standards
+- Use standard JavaScript (ES6+).
+- No telemetry or analytics.
+- Maintain the "Radical Transparency" philosophy.
