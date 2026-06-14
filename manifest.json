@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extensionName__",
+  "version": "1.0.1",
+  "default_locale": "en",
+  "description": "__MSG_extensionDescription__",
+  "permissions": ["privacy"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/logo.svg"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["inject.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "webrtc-nullifier@privacy-extensions.local",
+      "strict_min_version": "109.0"
+    }
+  }
+}
