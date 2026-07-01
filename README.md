@@ -1,42 +1,108 @@
 # WebRTC Nullifier
 
-## Purpose
-WebRTC Nullifier is the ultimate, dual-layer privacy shield. It permanently prevents WebRTC from leaking your local IP address at the network stack level.
+A dual-layer privacy shield that blocks WebRTC from leaking your local IP address at the browser's network-stack level. Zero data collection, zero telemetry, zero external servers.
 
-## The Dual-Layer Mechanism
-1. **The Network Stack (The Kitchen):** 
-   Using the official `chrome.privacy` and `browser.privacy` APIs, it instructs the browser's underlying network engine to completely block the exposure of local network interfaces. This guarantees **Zero IP Leaks**.
+- **Version:** 1.1.0
+- **License:** MIT (see [LICENSE](LICENSE))
+- **Author:** skuscribe — [github.com/skuscribe](https://github.com/skuscribe) · [skuscribe@tuta.io](mailto:skuscribe@tuta.io)
 
-2. **The JavaScript Layer (The Menu):** 
-   We attempt to obscure API availability, but we believe in Radical Transparency regarding browser limitations (see below).
+---
 
-## Radical Transparency: The "Menu vs. Kitchen" Reality
-If you test this extension on sites like Browserleaks.com, you will see:
-- `RTCPeerConnection: True` (or "function")
+## Install
+
+**Firefox (recommended):** available on Firefox Add-ons (AMO).
+<!-- TODO: paste the AMO listing URL here once you have the slug, e.g. https://addons.mozilla.org/firefox/addon/webrtc-nullifier/ -->
+
+**Load unpacked (any browser, for development):**
+1. Clone or download this repository.
+2. Open your browser's extensions page:
+   - Chromium (Chrome/Edge/Brave/Vivaldi/Opera): `chrome://extensions/`
+   - Firefox: `about:debugging#/runtime/this-firefox`
+3. Enable **Developer mode** (Chromium) or use **Load Temporary Add-on** (Firefox).
+4. Point it at the **`src/`** folder — that folder *is* the extension. Load `src/manifest.json` on Firefox, or "Load unpacked" → select `src/` on Chromium.
+
+To produce a store-ready package, zip the **contents** of `src/` (not the folder itself). See [CONTRIBUTING.md](CONTRIBUTING.md#building-a-release).
+
+---
+
+## How it works
+
+### 1. The network stack (the "kitchen")
+Using the official `chrome.privacy` / `browser.privacy` APIs, the extension tells the browser's network engine to stop exposing local network interfaces. This is what actually guarantees **zero IP leaks**.
+
+### 2. The JavaScript layer (the "menu")
+A content script attempts to hide the WebRTC constructors (`RTCPeerConnection` and friends) from page scripts. On engines where these properties are configurable, this removes the API surface; where they are not (see below), it is a harmless best-effort layer. The real guarantee always comes from layer 1.
+
+---
+
+## Radical transparency: "menu vs. kitchen"
+
+If you test this extension on a site like [browserleaks.com](https://browserleaks.com), you may still see:
+
+- `RTCPeerConnection: True` (or `function`)
 - `WebRTC Leak Test: ✔ No Leak`
 - `Local IP Address: -`
 
-**This is the expected, correct, and secure outcome.** 
+**This is the expected, correct, and secure outcome.** Modern Chromium (V8) hard-codes native constructors like `RTCPeerConnection` as *non-configurable* — a browser-level security feature. It is effectively impossible for any JavaScript extension to turn `typeof RTCPeerConnection` into `undefined` without modifying the browser's C++ source and compiling a custom build.
 
-Modern browsers (Chromium V8 engine) hard-code native constructors like `RTCPeerConnection` as **non-configurable**. This is a browser-level security feature. **It is mathematically impossible for any JavaScript extension to change `typeof RTCPeerConnection` to `undefined` without modifying the browser's C++ source code.** 
+Any extension claiming to make the API report "False" on modern Chrome is over-promising. WebRTC Nullifier does not: the value that matters for your privacy is that the **actual network leak is blocked** (proven by the "No Leak" result). The `True` label is a read-only detection artifact left by the browser.
 
-Any extension claiming to make the API "False" or "undefined" on modern Chrome is making a false promise. WebRTC Nullifier does not lie to you. We guarantee the *actual* network leak is blocked (proven by the "No Leak" result), which is the only thing that matters for your privacy. The "True" detection is a harmless, read-only label left by the browser.
+---
 
-## Cross-Browser Compatibility
-Universally compatible across all major engines and operating systems:
-- **Chromium:** Chrome, Edge, Yandex, Brave, Helium, Opera, Vivaldi.
-- **Gecko:** Firefox, LibreWolf, Waterfox, Tor Browser.
+## Important: effect on video/voice calls
 
-## Installation Instructions
-1. Download and extract the `webrtc-nullifier-store-ready.zip` file.
-2. Open your browser and navigate to `chrome://extensions/` (or `about:debugging#/runtime/this-firefox`).
-3. Enable **"Developer mode"** in the top right corner.
-4. Click **"Load unpacked"** (Chrome) or **"Load Temporary Add-on"** (Firefox) and select the extracted folder.
+The two engines enforce privacy differently, and the trade-off is different on each:
 
-## Author & Contact
-- **Developer:** skuscribe
-- **Contact:** [skuscribe@tuta.io](mailto:skuscribe@tuta.io)
-- **GitHub:** [github.com/skuscribe](https://github.com/skuscribe)
+- **Chromium (Chrome, Edge, Brave, etc.):** WebRTC keeps working. Calls are routed through relay (TURN) servers instead of direct peer connections, so your local IP is never exposed — Google Meet, Zoom Web, Discord, etc. continue to function.
+- **Firefox / Gecko:** the extension fully disables the WebRTC API (`media.peerconnection.enabled = false`). This is the strongest possible guarantee against leaks, but it also means **browser-based WebRTC calling will not work at all** while the extension is enabled. If you need to place a call in Firefox, disable the extension first.
 
-## The Hard Truth About Chromium Browsers
-If you test this on Chrome, Edge, Brave, or Helium, Browserleaks will show `RTCPeerConnection: True`. **This is expected and unfixable by an extension.** Chromium hardcodes these APIs in its C++ engine. The only way to make it show "False" is to download the 30GB Chromium source code, delete the C++ lines that register the API, and compile your own custom browser from scratch. WebRTC Nullifier does not lie to you. We guarantee the actual network leak is blocked (proven by "No Leak"), which is the only thing that matters for your privacy.
+This is disclosed in the popup and the store listing so there are no surprises.
+
+---
+
+## Cross-browser compatibility
+
+- **Chromium:** Chrome, Edge, Yandex, Brave, Helium, Opera, Vivaldi
+- **Gecko:** Firefox, LibreWolf, Waterfox, Tor Browser
+
+---
+
+## Project structure
+
+```
+webrtc-nullifier/
+├── src/                     # The extension (this folder is what ships to the stores)
+│   ├── manifest.json        # MV3, v1.1.0
+│   ├── background.js        # Network-stack policy (the "kitchen")
+│   ├── inject.js            # Best-effort API hider (the "menu")
+│   ├── popup.html / .css    # Toolbar popup
+│   ├── _locales/            # en, es
+│   │   ├── en/messages.json
+│   │   └── es/messages.json
+│   └── icons/               # logo.svg + 16/32/48/128 PNG
+├── docs/                    # Supporting material (not shipped in the add-on)
+│   ├── compliance-and-store-listings.txt
+│   └── screenshots/
+├── index.html               # Landing page (GitHub Pages friendly)
+├── README.md
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── LICENSE
+└── COPYRIGHT
+```
+
+---
+
+## Privacy
+
+WebRTC Nullifier collects **zero** user data. No analytics, no tracking pixels, no cookies, no external telemetry. Every operation happens locally in your browser. The only permission it requests is the native `privacy` API. See [docs/compliance-and-store-listings.txt](docs/compliance-and-store-listings.txt) for the full compliance notes.
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first — the short version is: standard ES6+ JavaScript, no telemetry or analytics, and keep the "radical transparency" philosophy intact.
+
+## License
+
+Released under the MIT License. Copyright © 2026 skuscribe. See [LICENSE](LICENSE) and [COPYRIGHT](COPYRIGHT).
