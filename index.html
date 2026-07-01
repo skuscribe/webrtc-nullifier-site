@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebRTC Nullifier - Absolute Network Privacy</title>
+  <!-- Favicon embedded inline so it always renders, regardless of hosting path -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEyOCIgZmlsbD0iIzBmMTcyYSIvPgogIDxwYXRoIGQ9Ik0yNTYgODAgQzE1MCA4MCA4MCAxNTAgODAgMjU2IEM4MCAzNjIgMTUwIDQzMiAyNTYgNDMyIEMzNjIgNDMyIDQzMiAzNjIgNDMyIDI1NiBDNDMyIDE1MCAzNjIgODAgMjU2IDgwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM4YmRmOCIgc3Ryb2tlLXdpZHRoPSIyNCIvPgogIDxwYXRoIGQ9Ik0xODAgMTgwIEwzMzIgMzMyIE0zMzIgMTgwIEwxODAgMzMyIiBzdHJva2U9IiNlZjQ0NDQiIHN0cm9rZS13aWR0aD0iMzIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iNDAiIGZpbGw9IiMzOGJkZjgiLz4KPC9zdmc+Cg==">
   <style>
     :root { --bg: #0f172a; --text: #f8fafc; --accent: #38bdf8; --danger: #ef4444; }
     body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; box-sizing: border-box; }
@@ -19,12 +21,17 @@
 </head>
 <body>
   <div class="container">
-    <img src="src/icons/logo.svg" alt="WebRTC Nullifier Logo" class="logo">
+    <!-- Logo inlined as SVG: no external request, so it can never 404 on GitHub Pages -->
+    <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="WebRTC Nullifier logo">
+      <rect width="512" height="512" rx="128" fill="#0f172a"/>
+      <path d="M256 80 C150 80 80 150 80 256 C80 362 150 432 256 432 C362 432 432 362 432 256 C432 150 362 80 256 80 Z" fill="none" stroke="#38bdf8" stroke-width="24"/>
+      <path d="M180 180 L332 332 M332 180 L180 332" stroke="#ef4444" stroke-width="32" stroke-linecap="round"/>
+      <circle cx="256" cy="256" r="40" fill="#38bdf8"/>
+    </svg>
     <h1>WebRTC <span class="highlight">Nullifier</span></h1>
     <div class="badge">Zero Data Collection. Zero IP Leaks.</div>
     <p>Most privacy extensions only hide the menu. We lock the kitchen. WebRTC Nullifier uses native, dual-layer browser APIs to permanently block local IP exposure and completely hide WebRTC support from website fingerprinting. No telemetry. No external servers. Just absolute privacy.</p>
-    <!-- TODO: point this at the Firefox Add-ons (AMO) listing once the URL is available -->
-    <a href="#" class="cta">Get the Extension</a>
+    <a href="https://addons.mozilla.org/en-US/firefox/addon/webrtc-nullifier/" class="cta" target="_blank" rel="noopener noreferrer">Get the Extension</a>
   </div>
 <footer style="margin-top: 3rem; font-size: 0.9rem; color: #64748b;">Developed by <a href="https://github.com/skuscribe" style="color: #38bdf8; text-decoration: none;">skuscribe</a> | Contact: <a href="mailto:skuscribe@tuta.io" style="color: #38bdf8; text-decoration: none;">skuscribe@tuta.io</a></footer>
 <div style="margin-top: 3rem; font-size: 0.8rem; color: #64748b; border-top: 1px solid #1e293b; padding-top: 1.5rem; text-align: center;">

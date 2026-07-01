@@ -10,8 +10,8 @@ A dual-layer privacy shield that blocks WebRTC from leaking your local IP addres
 
 ## Install
 
-**Firefox (recommended):** available on Firefox Add-ons (AMO).
-<!-- TODO: paste the AMO listing URL here once you have the slug, e.g. https://addons.mozilla.org/firefox/addon/webrtc-nullifier/ -->
+**Firefox (recommended):** install from Firefox Add-ons (AMO) →
+[addons.mozilla.org/firefox/addon/webrtc-nullifier](https://addons.mozilla.org/en-US/firefox/addon/webrtc-nullifier/)
 
 **Load unpacked (any browser, for development):**
 1. Clone or download this repository.
